@@ -19,7 +19,7 @@ type Book struct {
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted"`
 }
 
-func (b Book) NewBook() Book {
+func NewBook() Book {
 	return Book{
 		ID: uuid.New().String(),
 	}

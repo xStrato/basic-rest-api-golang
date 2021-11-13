@@ -41,7 +41,7 @@ func GetById(c *gin.Context) {
 
 func Create(c *gin.Context) {
 	db := database.GetConnection()
-	var book model.Book
+	book := model.NewBook()
 	if err := c.ShouldBindJSON(&book); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Cannot bind JSON: " + err.Error(),
