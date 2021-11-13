@@ -9,7 +9,7 @@ import (
 	"github.com/xStrato/rest-api-30min/model"
 )
 
-func GetAll(c *gin.Context) {
+func GetAllBooks(c *gin.Context) {
 	db := database.GetConnection()
 	var books []model.Book
 	if err := db.Find(&books).Error; err != nil {
@@ -21,7 +21,7 @@ func GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, books)
 }
 
-func GetById(c *gin.Context) {
+func GetBookById(c *gin.Context) {
 	var id string
 	if id = c.Param("id"); strings.TrimSpace(id) == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -40,7 +40,7 @@ func GetById(c *gin.Context) {
 	c.JSON(http.StatusOK, book)
 }
 
-func Create(c *gin.Context) {
+func CreateBook(c *gin.Context) {
 	db := database.GetConnection()
 	book := model.NewBook()
 	if err := c.ShouldBindJSON(&book); err != nil {
@@ -58,7 +58,7 @@ func Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, book)
 }
 
-func Update(c *gin.Context) {
+func UpdateBook(c *gin.Context) {
 	db := database.GetConnection()
 	var book model.Book
 	if err := c.ShouldBindJSON(&book); err != nil {
@@ -76,7 +76,7 @@ func Update(c *gin.Context) {
 	c.JSON(http.StatusCreated, book)
 }
 
-func Delete(c *gin.Context) {
+func DeleteBook(c *gin.Context) {
 	var id string
 	if id = c.Param("id"); strings.TrimSpace(id) == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
