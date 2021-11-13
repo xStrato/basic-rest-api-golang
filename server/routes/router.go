@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/xStrato/rest-api-30min/controllers"
+	"github.com/xStrato/rest-api-30min/server/middlewares"
 )
 
 func Configure(gin *gin.Engine) *gin.Engine {
@@ -17,7 +18,7 @@ func Configure(gin *gin.Engine) *gin.Engine {
 			user.GET("/", controllers.GetAllUsers)
 			user.POST("/", controllers.CreateUser)
 		}
-		books := main.Group("books")
+		books := main.Group("books", middlewares.Auth())
 		{
 			books.GET("/", controllers.GetAllBooks)
 			books.GET("/:id", controllers.GetBookById)
