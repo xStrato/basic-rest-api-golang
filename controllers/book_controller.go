@@ -22,7 +22,8 @@ func GetAll(c *gin.Context) {
 }
 
 func GetById(c *gin.Context) {
-	if id := c.Param("id"); strings.TrimSpace(id) == "" {
+	var id string
+	if id = c.Param("id"); strings.TrimSpace(id) == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "'id' cannot be null or empty",
 		})
@@ -30,7 +31,7 @@ func GetById(c *gin.Context) {
 	}
 	db := database.GetConnection()
 	var book model.Book
-	if err := db.First(&book).Error; err != nil {
+	if err := db.First(&book, "ID=?", id).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Book cannot be found: " + err.Error(),
 		})
@@ -55,4 +56,40 @@ func Create(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, book)
+}
+
+func Update(c *gin.Context) {
+	db := database.GetConnection()
+	var book model.Book
+	if err := c.ShouldBindJSON(&book); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Cannot bind JSON: " + err.Error(),
+		})
+		return
+	}
+	if err := db.Save(&book).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Cannot update book: " + err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusCreated, book)
+}
+
+func Delete(c *gin.Context) {
+	var id string
+	if id = c.Param("id"); strings.TrimSpace(id) == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "'id' cannot be null or empty",
+		})
+		return
+	}
+	db := database.GetConnection()
+	if err := db.Delete(&model.Book{}, "ID=?", id).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Cannot delete book: " + err.Error(),
+		})
+		return
+	}
+	c.Status(http.StatusNoContent)
 }

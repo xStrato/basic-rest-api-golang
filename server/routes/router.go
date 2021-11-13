@@ -13,6 +13,8 @@ func Configure(gin *gin.Engine) *gin.Engine {
 			books.GET("/", controllers.GetAll)
 			books.GET("/:id", controllers.GetById)
 			books.POST("/", controllers.Create)
+			books.PUT("/", controllers.Update)
+			books.DELETE("/:id", controllers.Delete)
 		}
 	}
 	return gin
