@@ -8,6 +8,10 @@ import (
 func Configure(gin *gin.Engine) *gin.Engine {
 	main := gin.Group("api/v1")
 	{
+		login := main.Group("login")
+		{
+			login.POST("/", controllers.Login)
+		}
 		user := main.Group("user")
 		{
 			user.GET("/", controllers.GetAllUsers)
