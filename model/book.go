@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,6 +21,8 @@ type Book struct {
 }
 
 func NewBook() Book {
+	t := NewUser()
+	fmt.Println(t)
 	return Book{
 		ID: uuid.New().String(),
 	}
